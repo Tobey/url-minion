@@ -134,4 +134,10 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 django_heroku.settings(locals())
 
 
-APP_URL = 'https://url-minion.herokuapp.com'
+APP_URL = os.getenv('APP_URL', 'http://127.0.0.1:8000')
+
+
+try:
+    from .local_settings import *
+except ImportError:
+    pass
