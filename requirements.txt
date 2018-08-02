@@ -3,3 +3,4 @@ djangorestframework==3.8.2
 django-heroku==0.3.1 
 gunicorn==19.9.0
 whitenoise==3.3.1
+short-url==1.2.2

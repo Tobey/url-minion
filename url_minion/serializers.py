@@ -1,5 +1,6 @@
 import uuid
 
+import short_url
 from django.conf import settings
 from django.forms import URLField
 from rest_framework import serializers
@@ -17,16 +18,17 @@ def url_validator(url):
 class ShortUrlSerializer(serializers.ModelSerializer):
     url = serializers.CharField(validators=[url_validator])
 
-    def to_internal_value(self, data):
-        data = data.copy()
-        # TODO: short url algorithm required
-        data['index'] = str(uuid.uuid4())[:20]
-        return super().to_internal_value(data)
-
     def to_representation(self, instance):
         return {'shortened_url': f'{settings.APP_URL}/{instance.index}'}
 
+    def create(self, validated_data):
+        instance = super().create(validated_data)
+        unique_hash = short_url.encode_url(instance.id)
+        instance.index = unique_hash
+        instance.save()
+        return instance
+
     class Meta:
         model = ShortUrl
-        fields = '__all__'
+        fields = ('url',)
 
