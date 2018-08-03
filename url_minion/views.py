@@ -1,9 +1,10 @@
 from django.forms import URLField
 from django.shortcuts import redirect
+
 from rest_framework import mixins
 from rest_framework import viewsets
-from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework.response import Response
 
 from url_minion.models import ShortUrl
 from url_minion.serializers import ShortUrlSerializer
@@ -23,11 +24,11 @@ class GenericShortUrlView(viewsets.GenericViewSet):
 
 
 class ShortUrlViewSet(mixins.CreateModelMixin, GenericShortUrlView):
-    """Create API for short Url. only POST accepted with shortened url in response"""
+    """Used to create shorter urls"""
 
 
 class UrlIndexViewSet(mixins.RetrieveModelMixin, GenericShortUrlView):
-    """Short Url lookup view. Redirects to long_url if index is found"""
+    """Used redirect short url"""
 
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
